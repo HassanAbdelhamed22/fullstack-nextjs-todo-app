@@ -13,11 +13,15 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { getTodoAction } from "@/actions/todo.actions";
 
-export default function Home() {
+export default async function Home() {
+  const todos = await getTodoAction();
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <ModeToggle />
+
+      <pre>{JSON.stringify(todos, null, 2)}</pre>
 
       <Dialog>
         <form>
