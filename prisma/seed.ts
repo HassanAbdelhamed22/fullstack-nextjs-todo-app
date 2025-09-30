@@ -11,27 +11,6 @@ async function main() {
       body: faker.lorem.paragraph(),
     })),
   });
-
-  //* Create fake users
-  // await prisma.user.createMany({
-  //   data: Array.from({ length: 20 }, () => ({
-  //     name: faker.internet.userName(),
-  //     email: faker.internet.email(),
-  //     address: {
-  //       street: faker.address.street(),
-  //       city: faker.address.city(),
-  //       state: faker.address.state(),
-  //       zip: faker.address.zipCode(),
-  //     },
-  //   })),
-  // });
-
-  const allUsers = await prisma.user.findMany({
-    include: {
-      posts: true,
-    },
-  });
-  console.dir(allUsers, { depth: null });
 }
 
 main()
