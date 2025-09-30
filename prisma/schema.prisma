@@ -7,6 +7,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Todo {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  body      String?
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
 model Post {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   slug     String    @unique
