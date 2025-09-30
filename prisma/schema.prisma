@@ -7,7 +7,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Todo {
+model Post {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   slug     String    @unique
   title    String
@@ -21,7 +21,7 @@ model User {
   email   String   @unique
   name    String?
   address Address?
-  posts   Todo[]
+  posts   Post[]
 }
 
 // Address is an embedded document
