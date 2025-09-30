@@ -18,10 +18,20 @@ import { getTodoAction } from "@/actions/todo.actions";
 export default async function Home() {
   const todos = await getTodoAction();
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    <div className="container mx-auto p-4">
       <ModeToggle />
 
-      <pre>{JSON.stringify(todos, null, 2)}</pre>
+      <div className="max-w-3xl mt-10">
+        <h1 className="text-3xl font-bold">Todo List</h1>
+        <ul className="mt-4 space-y-4">
+          {todos.map((todo) => (
+            <div key={todo.id} className="p-4 border rounded-lg shadow-sm">
+              <h2 className="text-2xl font-bold">{todo.title}</h2>
+              <p className="mt-2">{todo.body}</p>
+            </div>
+          ))}
+        </ul>
+      </div>
 
       <Dialog>
         <form>
