@@ -11,12 +11,52 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { getTodoAction } from "@/actions/todo.actions";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const todoFormSchema = z.object({
+  title: z
+    .string()
+    .min(5, { message: "Title must be at least 5 characters." })
+    .max(30, { message: "Title must be at most 30 characters." }),
+  body: z
+    .string()
+    .max(100, { message: "Body must be at most 100 characters." })
+    .optional(),
+});
 
 export default async function Home() {
   const todos = await getTodoAction();
+
+  type TodoFormValues = z.infer<typeof todoFormSchema>;
+  const defaultValues: Partial<TodoFormValues> = {
+    title: "",
+    body: "",
+  };
+
+  function onSubmit(data: TodoFormValues) {
+    console.log(data);
+  }
+
+  const form = useForm<TodoFormValues>({
+    resolver: zodResolver(todoFormSchema),
+    defaultValues,
+    mode: "onChange",
+  });
+
   return (
     <div className="container mx-auto p-4">
       <ModeToggle />
@@ -33,25 +73,56 @@ export default async function Home() {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle>Edit profile</DialogTitle>
+                <DialogTitle>Create todo</DialogTitle>
                 <DialogDescription>
-                  Make changes to your profile here. Click save when you&apos;re
-                  done.
+                  Make sure to fill in all fields before submitting.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4">
-                <div className="grid gap-3">
-                  <Label htmlFor="name-1">Name</Label>
-                  <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
-                </div>
-                <div className="grid gap-3">
-                  <Label htmlFor="username-1">Username</Label>
-                  <Input
-                    id="username-1"
-                    name="username"
-                    defaultValue="@peduarte"
-                  />
-                </div>
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-8"
+                  >
+                    <FormField
+                      control={form.control}
+                      name="title"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Title</FormLabel>
+                          <FormControl>
+                            <Input placeholder="shadcn" {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            This is the title of your todo.
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    {/* for body */}
+                    <FormField
+                      control={form.control}
+                      name="body"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Body</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Tell us a little bit about yourself"
+                              className="resize-none"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormDescription>
+                            You can write about yourself here.
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </form>
+                </Form>
               </div>
               <DialogFooter>
                 <DialogClose asChild>
