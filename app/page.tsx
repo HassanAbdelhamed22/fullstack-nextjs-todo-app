@@ -1,3 +1,5 @@
+"use client";
+
 import { ModeToggle } from "@/components/ModeToggle";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -38,13 +40,13 @@ const todoFormSchema = z.object({
     .optional(),
 });
 
-export default async function Home() {
-  const todos = await getTodoAction();
+export default function Home() {
+  // const todos = await getTodoAction();
 
   type TodoFormValues = z.infer<typeof todoFormSchema>;
   const defaultValues: Partial<TodoFormValues> = {
-    title: "",
-    body: "",
+    title: "Default title",
+    body: "Default body",
   };
 
   function onSubmit(data: TodoFormValues) {
@@ -75,7 +77,7 @@ export default async function Home() {
               <DialogHeader>
                 <DialogTitle>Create todo</DialogTitle>
                 <DialogDescription>
-                  Make sure to fill in all fields before submitting.
+                  Fill the form below to create a new todo.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4">
@@ -91,11 +93,8 @@ export default async function Home() {
                         <FormItem>
                           <FormLabel>Title</FormLabel>
                           <FormControl>
-                            <Input placeholder="shadcn" {...field} />
+                            <Input placeholder="Todo title" {...field} />
                           </FormControl>
-                          <FormDescription>
-                            This is the title of your todo.
-                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -106,17 +105,14 @@ export default async function Home() {
                       name="body"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Body</FormLabel>
+                          <FormLabel>Description</FormLabel>
                           <FormControl>
                             <Textarea
-                              placeholder="Tell us a little bit about yourself"
+                              placeholder="Todo body"
                               className="resize-none"
                               {...field}
                             />
                           </FormControl>
-                          <FormDescription>
-                            You can write about yourself here.
-                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -135,7 +131,7 @@ export default async function Home() {
         </Dialog>
       </div>
 
-      <div className="max-w-3xl mt-4">
+      {/* <div className="max-w-3xl mt-4">
         <ul className="mt-4 space-y-4">
           {todos.map((todo) => (
             <div key={todo.id} className="p-4 border rounded-lg shadow-sm">
@@ -144,7 +140,7 @@ export default async function Home() {
             </div>
           ))}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 }
