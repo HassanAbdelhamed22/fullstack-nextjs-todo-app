@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Check, Plus } from "lucide-react";
 import {
   Dialog,
   DialogClose,
@@ -26,15 +26,21 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { todoFormSchema, TodoFormValues } from "@/schema";
 import { createTodoAction } from "@/actions/todo.actions";
+import { Checkbox } from "./ui/checkbox";
 
 const AddTodoForm = () => {
   const defaultValues: Partial<TodoFormValues> = {
-    title: "Default title",
-    body: "Default body",
+    title: "",
+    body: "",
+    completed: false,
   };
 
   const onSubmit = async (data: TodoFormValues) => {
-    await createTodoAction({ title: data.title, body: data.body });
+    await createTodoAction({
+      title: data.title,
+      body: data.body,
+      completed: data.completed,
+    });
   };
 
   const form = useForm<TodoFormValues>({
@@ -96,6 +102,24 @@ const AddTodoForm = () => {
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name="completed"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center space-x-[2px] space-y-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormLabel>Completed</FormLabel>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <DialogFooter>
                   <DialogClose asChild>
                     <Button variant="outline">Cancel</Button>
