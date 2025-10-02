@@ -8,11 +8,12 @@ export const getTodoAction = async () => {
   const todos = await prisma.todo.findMany();
   return todos;
 };
-export const createTodoAction = async ({ title, body}: { title: string; body?: string }) => {
+export const createTodoAction = async ({ title, body, completed }: { title: string; body?: string, completed: boolean }) => {
   await prisma.todo.create({
     data: {
       title,
       body,
+      completed,
     },
   });
 };
