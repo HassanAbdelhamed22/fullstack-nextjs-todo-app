@@ -7,17 +7,30 @@ export default async function Home() {
   const todos = await getTodoAction();
 
   return (
-    <div className="container mx-auto p-4">
-      <ModeToggle />
+    <div className="container max-w-6xl mx-auto p-4">
+      {/* Header */}
+      <div className="flex justify-between items-center py-3 border-b mb-6">
+        <h1 className="text-3xl font-bold tracking-tight">Todo List</h1>
+        <ModeToggle />
+      </div>
 
-      <div className="flex justify-between items-center mb-2 mt-5">
-        <h1 className="text-3xl font-bold">Todo List</h1>
+      {/* Add Form */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold">Manage your tasks</h2>
         <AddTodoForm />
       </div>
 
-      <div className="max-w-3xl mt-4">
-        <TodoTable />
-      </div>
+      {/* Todo Section */}
+      {todos.length === 0 ? (
+        <div className="text-center py-10 text-muted-foreground">
+          <p className="text-lg mb-2">No todos yet 🎉</p>
+          <AddTodoForm />
+        </div>
+      ) : (
+        <div className="rounded-xl border shadow-sm overflow-hidden">
+          <TodoTable todos={todos} />
+        </div>
+      )}
     </div>
   );
 }
