@@ -9,6 +9,7 @@ export const todoFormSchema = z.object({
     .string()
     .max(100, { message: "Body must be at most 100 characters." })
     .optional(),
+  completed: z.boolean(),
 });
 
 export type TodoFormValues = z.infer<typeof todoFormSchema>;
