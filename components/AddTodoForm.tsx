@@ -27,8 +27,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { todoFormSchema, TodoFormValues } from "@/schema";
 import { createTodoAction } from "@/actions/todo.actions";
 import { Checkbox } from "./ui/checkbox";
+import { useState } from "react";
+import Spinner from "./ui/Spinner";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const AddTodoForm = () => {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const defaultValues: Partial<TodoFormValues> = {
     title: "",
     body: "",
@@ -36,11 +44,23 @@ const AddTodoForm = () => {
   };
 
   const onSubmit = async (data: TodoFormValues) => {
-    await createTodoAction({
-      title: data.title,
-      body: data.body,
-      completed: data.completed,
-    });
+    try {
+      setLoading(true);
+      await createTodoAction({
+        title: data.title,
+        body: data.body,
+        completed: data.completed,
+      });
+
+      router.refresh();
+      setOpen(false);
+      form.reset();
+      toast.success("Todo created successfully!");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const form = useForm<TodoFormValues>({
@@ -50,7 +70,7 @@ const AddTodoForm = () => {
   });
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <form>
         <DialogTrigger asChild>
           <Button className="cursor-pointer">
@@ -122,9 +142,13 @@ const AddTodoForm = () => {
 
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button variant="outline">Cancel</Button>
+                    <Button variant="outline" disabled={loading}>
+                      Cancel
+                    </Button>
                   </DialogClose>
-                  <Button type="submit">Save changes</Button>
+                  <Button type="submit" disabled={loading}>
+                    {loading ? <Spinner /> : "Save changes"}
+                  </Button>
                 </DialogFooter>
               </form>
             </Form>
