@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -18,8 +20,23 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import { deleteTodoAction } from "@/actions/todo.actions";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useState } from "react";
+import Spinner from "./ui/Spinner";
 
 export function TodoTable({ todos }: { todos: ITodo[] }) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const onDelete = async ({ id }: { id: string }) => {
+    setLoading(true);
+    await deleteTodoAction({ id });
+    setLoading(false);
+    router.refresh();
+    toast.success("Todo deleted successfully!");
+  };
   return (
     <div className="w-full">
       {/* Desktop Table */}
@@ -64,7 +81,11 @@ export function TodoTable({ todos }: { todos: ITodo[] }) {
                       <div className="flex justify-end space-x-2">
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <Button size="icon" variant="outline">
+                            <Button
+                              size="icon"
+                              variant="outline"
+                              className="cursor-pointer"
+                            >
                               <Pen className="h-4 w-4" />
                             </Button>
                           </TooltipTrigger>
@@ -73,8 +94,17 @@ export function TodoTable({ todos }: { todos: ITodo[] }) {
 
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <Button size="icon" variant="destructive">
-                              <TrashIcon className="h-4 w-4" />
+                            <Button
+                              size="icon"
+                              variant="destructive"
+                              className="cursor-pointer"
+                              onClick={() => onDelete({ id: todo.id })}
+                            >
+                              {loading ? (
+                                <Spinner />
+                              ) : (
+                                <TrashIcon className="h-4 w-4" />
+                              )}
                             </Button>
                           </TooltipTrigger>
                           <TooltipContent>Delete</TooltipContent>
@@ -116,11 +146,16 @@ export function TodoTable({ todos }: { todos: ITodo[] }) {
             </p>
 
             <div className="flex justify-end space-x-2 mt-3">
-              <Button size="icon" variant="outline">
+              <Button size="icon" variant="outline" className="cursor-pointer">
                 <Pen className="h-4 w-4" />
               </Button>
-              <Button size="icon" variant="destructive">
-                <TrashIcon className="h-4 w-4" />
+              <Button
+                size="icon"
+                variant="destructive"
+                className="cursor-pointer"
+                onClick={() => onDelete({ id: todo.id })}
+              >
+                {loading ? <Spinner /> : <TrashIcon className="h-4 w-4" />}
               </Button>
             </div>
           </div>
