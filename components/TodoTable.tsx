@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Table,
   TableBody,
@@ -10,119 +8,62 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "./ui/button";
-import { Pen, TrashIcon } from "lucide-react";
 import { ITodo } from "@/types";
 import { Badge } from "./ui/badge";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./ui/tooltip";
-import { deleteTodoAction } from "@/actions/todo.actions";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { useState } from "react";
-import Spinner from "./ui/Spinner";
+import TodosTableActions from "./TodosTableActions";
 
 export function TodoTable({ todos }: { todos: ITodo[] }) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-
-  const onDelete = async ({ id }: { id: string }) => {
-    setLoading(true);
-    await deleteTodoAction({ id });
-    setLoading(false);
-    router.refresh();
-    toast.success("Todo deleted successfully!");
-  };
   return (
     <div className="w-full">
       {/* Desktop Table */}
       <div className="hidden md:block">
-        <TooltipProvider>
-          <Table>
-            <TableCaption>A list of your recent Todos.</TableCaption>
-            <TableHeader>
+        <Table>
+          <TableCaption>A list of your recent Todos.</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ID</TableHead>
+              <TableHead>Title</TableHead>
+              <TableHead>Completed</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {todos.length === 0 ? (
               <TableRow>
-                <TableHead>ID</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Completed</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableCell
+                  colSpan={4}
+                  className="text-center text-muted-foreground py-6"
+                >
+                  No todos yet. 🎉 Add your first one!
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {todos.length === 0 ? (
-                <TableRow>
-                  <TableCell
-                    colSpan={4}
-                    className="text-center text-muted-foreground py-6"
-                  >
-                    No todos yet. 🎉 Add your first one!
+            ) : (
+              todos.map((todo) => (
+                <TableRow
+                  key={todo.id}
+                  className="hover:bg-muted/50 transition-colors"
+                >
+                  <TableCell className="font-medium">{todo.id}</TableCell>
+                  <TableCell>{todo.title}</TableCell>
+                  <TableCell>
+                    <Badge variant={todo.completed ? "success" : "destructive"}>
+                      {todo.completed ? "Completed" : "Pending"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <TodosTableActions id={todo.id} />
                   </TableCell>
                 </TableRow>
-              ) : (
-                todos.map((todo) => (
-                  <TableRow
-                    key={todo.id}
-                    className="hover:bg-muted/50 transition-colors"
-                  >
-                    <TableCell className="font-medium">{todo.id}</TableCell>
-                    <TableCell>{todo.title}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={todo.completed ? "success" : "destructive"}
-                      >
-                        {todo.completed ? "Completed" : "Pending"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end space-x-2">
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              size="icon"
-                              variant="outline"
-                              className="cursor-pointer"
-                            >
-                              <Pen className="h-4 w-4" />
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>Edit</TooltipContent>
-                        </Tooltip>
-
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              size="icon"
-                              variant="destructive"
-                              className="cursor-pointer"
-                              onClick={() => onDelete({ id: todo.id })}
-                            >
-                              {loading ? (
-                                <Spinner />
-                              ) : (
-                                <TrashIcon className="h-4 w-4" />
-                              )}
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>Delete</TooltipContent>
-                        </Tooltip>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell colSpan={3}>Total</TableCell>
-                <TableCell className="text-right">{todos.length}</TableCell>
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TooltipProvider>
+              ))
+            )}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={3}>Total</TableCell>
+              <TableCell className="text-right">{todos.length}</TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
       </div>
 
       {/* Mobile Table */}
@@ -145,19 +86,7 @@ export function TodoTable({ todos }: { todos: ITodo[] }) {
               Task ID: {todo.id}
             </p>
 
-            <div className="flex justify-end space-x-2 mt-3">
-              <Button size="icon" variant="outline" className="cursor-pointer">
-                <Pen className="h-4 w-4" />
-              </Button>
-              <Button
-                size="icon"
-                variant="destructive"
-                className="cursor-pointer"
-                onClick={() => onDelete({ id: todo.id })}
-              >
-                {loading ? <Spinner /> : <TrashIcon className="h-4 w-4" />}
-              </Button>
-            </div>
+            <TodosTableActions id={todo.id} />
           </div>
         ))}
 
