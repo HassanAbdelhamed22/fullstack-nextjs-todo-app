@@ -8,7 +8,15 @@ export const getTodoAction = async () => {
   const todos = await prisma.todo.findMany();
   return todos;
 };
-export const createTodoAction = async ({ title, body, completed }: { title: string; body?: string, completed: boolean }) => {
+export const createTodoAction = async ({
+  title,
+  body,
+  completed,
+}: {
+  title: string;
+  body?: string;
+  completed: boolean;
+}) => {
   await prisma.todo.create({
     data: {
       title,
@@ -18,4 +26,10 @@ export const createTodoAction = async ({ title, body, completed }: { title: stri
   });
 };
 export const updateTodoAction = async () => {};
-export const deleteTodoAction = async () => {};
+export const deleteTodoAction = async ({ id }: { id: string }) => {
+  await prisma.todo.delete({
+    where: {
+      id,
+    },
+  });
+};
