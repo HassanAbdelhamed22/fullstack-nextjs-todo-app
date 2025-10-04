@@ -29,11 +29,9 @@ import { createTodoAction } from "@/actions/todo.actions";
 import { Checkbox } from "./ui/checkbox";
 import { useState } from "react";
 import Spinner from "./ui/Spinner";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const AddTodoForm = () => {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -52,7 +50,6 @@ const AddTodoForm = () => {
         completed: data.completed,
       });
 
-      router.refresh();
       setOpen(false);
       form.reset();
       toast.success("Todo created successfully!");

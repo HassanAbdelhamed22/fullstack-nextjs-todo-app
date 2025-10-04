@@ -10,7 +10,6 @@ import {
 import { Button } from "./ui/button";
 import { Pen, TrashIcon } from "lucide-react";
 import Spinner from "./ui/Spinner";
-import { useRouter } from "next/navigation";
 import { deleteTodoAction } from "@/actions/todo.actions";
 import { toast } from "sonner";
 import {
@@ -26,7 +25,6 @@ import {
 } from "./ui/alert-dialog";
 
 const TodosTableActions = ({ id }: { id: string }) => {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const onDelete = async () => {
@@ -34,7 +32,6 @@ const TodosTableActions = ({ id }: { id: string }) => {
       setLoading(true);
       await deleteTodoAction({ id });
       toast.success("Todo deleted successfully!");
-      router.refresh();
     } catch (error) {
       toast.error("Failed to delete todo!");
     } finally {
