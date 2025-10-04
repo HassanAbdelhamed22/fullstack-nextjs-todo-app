@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 const prisma = new PrismaClient();
 
 export const getTodoAction = async () => {
-  const todos = await prisma.todo.findMany();
+  const todos = await prisma.todo.findMany({ orderBy: { createdAt: "desc" } });
   return todos;
 };
 export const createTodoAction = async ({
