@@ -25,6 +25,7 @@ import {
 } from "./ui/alert-dialog";
 
 const TodosTableActions = ({ id }: { id: string }) => {
+  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const onDelete = async () => {
@@ -32,6 +33,7 @@ const TodosTableActions = ({ id }: { id: string }) => {
       setLoading(true);
       await deleteTodoAction({ id });
       toast.success("Todo deleted successfully!");
+      setOpen(false);
     } catch (error) {
       toast.error("Failed to delete todo!");
     } finally {
@@ -54,7 +56,7 @@ const TodosTableActions = ({ id }: { id: string }) => {
 
         {/* Delete with confirmation modal */}
         <Tooltip>
-          <AlertDialog>
+          <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogTrigger asChild>
               <TooltipTrigger asChild>
                 <Button
