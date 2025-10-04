@@ -82,7 +82,13 @@ const TodosTableActions = ({ id }: { id: string }) => {
                   onClick={onDelete}
                   disabled={loading}
                 >
-                  {loading ? <Spinner /> : "Delete"}
+                  {loading ? (
+                    <>
+                      <Spinner /> Deleting...
+                    </>
+                  ) : (
+                    "Delete"
+                  )}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>

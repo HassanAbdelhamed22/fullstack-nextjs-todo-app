@@ -144,7 +144,13 @@ const AddTodoForm = () => {
                     </Button>
                   </DialogClose>
                   <Button type="submit" disabled={loading}>
-                    {loading ? <Spinner /> : "Save changes"}
+                    {loading ? (
+                      <>
+                        <Spinner /> Saving...
+                      </>
+                    ) : (
+                      "Save changes"
+                    )}
                   </Button>
                 </DialogFooter>
               </form>
