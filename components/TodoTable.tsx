@@ -51,7 +51,7 @@ export function TodoTable({ todos }: { todos: ITodo[] }) {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <TodosTableActions id={todo.id} />
+                    <TodosTableActions todo={todo} />
                   </TableCell>
                 </TableRow>
               ))
@@ -86,7 +86,7 @@ export function TodoTable({ todos }: { todos: ITodo[] }) {
               Task ID: {todo.id}
             </p>
 
-            <TodosTableActions id={todo.id} />
+            <TodosTableActions todo={todo} />
           </div>
         ))}
 

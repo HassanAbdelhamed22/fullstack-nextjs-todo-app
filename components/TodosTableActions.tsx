@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "./ui/tooltip";
 import { Button } from "./ui/button";
-import { Pen, TrashIcon } from "lucide-react";
+import { TrashIcon } from "lucide-react";
 import Spinner from "./ui/Spinner";
 import { deleteTodoAction } from "@/actions/todo.actions";
 import { toast } from "sonner";
@@ -23,15 +23,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
+import EditTodoForm from "./EditTodoForm";
+import { ITodo } from "@/types";
 
-const TodosTableActions = ({ id }: { id: string }) => {
+const TodosTableActions = ({ todo }: { todo: ITodo }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const onDelete = async () => {
     try {
       setLoading(true);
-      await deleteTodoAction({ id });
+      await deleteTodoAction({ id: todo.id });
       toast.success("Todo deleted successfully!");
       setOpen(false);
     } catch (error) {
@@ -47,9 +49,7 @@ const TodosTableActions = ({ id }: { id: string }) => {
         {/* Edit Button */}
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button size="icon" variant="outline" className="cursor-pointer">
-              <Pen className="h-4 w-4" />
-            </Button>
+            <EditTodoForm todo={todo} />
           </TooltipTrigger>
           <TooltipContent>Edit</TooltipContent>
         </Tooltip>
