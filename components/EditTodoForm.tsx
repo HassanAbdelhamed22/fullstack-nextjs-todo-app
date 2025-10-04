@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { todoFormSchema, TodoFormValues } from "@/schema";
-import { createTodoAction } from "@/actions/todo.actions";
+import { createTodoAction, updateTodoAction } from "@/actions/todo.actions";
 import { Checkbox } from "./ui/checkbox";
 import { useState } from "react";
 import Spinner from "./ui/Spinner";
@@ -45,15 +45,15 @@ const EditTodoForm = ({ todo }: { todo: ITodo }) => {
   const onSubmit = async (data: TodoFormValues) => {
     try {
       setLoading(true);
-      await createTodoAction({
+      await updateTodoAction({
+        id: todo.id,
         title: data.title,
-        body: data.body,
+        body: data.body as string,
         completed: data.completed,
       });
 
       setOpen(false);
-      form.reset();
-      toast.success("Todo created successfully!");
+      toast.success("Todo updated successfully!");
     } catch (error) {
       console.log(error);
     } finally {

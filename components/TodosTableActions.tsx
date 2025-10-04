@@ -33,6 +33,11 @@ const TodosTableActions = ({ todo }: { todo: ITodo }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
+      if (!todo.id) {
+        toast.error("Todo ID is missing!");
+        setLoading(false);
+        return;
+      }
       await deleteTodoAction({ id: todo.id });
       toast.success("Todo deleted successfully!");
       setOpen(false);
