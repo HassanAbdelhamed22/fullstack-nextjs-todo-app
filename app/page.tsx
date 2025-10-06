@@ -8,14 +8,8 @@ export default async function Home() {
   const todos = await getTodoAction();
 
   return (
-    <div className="container max-w-6xl mx-auto p-4">
+    <div>
       <Toaster position="top-right" richColors />
-
-      {/* Header */}
-      <div className="flex justify-between items-center py-3 border-b mb-6">
-        <h1 className="text-3xl font-bold tracking-tight">Todo List</h1>
-        <ModeToggle />
-      </div>
 
       {/* Add Form */}
       <div className="flex justify-between items-center mb-4">
@@ -24,16 +18,9 @@ export default async function Home() {
       </div>
 
       {/* Todo Section */}
-      {todos.length === 0 ? (
-        <div className="text-center py-10 text-muted-foreground">
-          <p className="text-lg mb-2">No todos yet 🎉</p>
-          <AddTodoForm />
-        </div>
-      ) : (
-        <div className="rounded-xl border shadow-sm overflow-hidden">
-          <TodoTable todos={todos} />
-        </div>
-      )}
+      <div className="rounded-xl border shadow-sm overflow-hidden">
+        <TodoTable todos={todos} />
+      </div>
     </div>
   );
 }
