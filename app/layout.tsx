@@ -10,6 +10,7 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import Header from "@/components/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,7 +44,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <Header />
+            <main className="max-w-6xl mx-auto px-6 py-10">{children}</main>
           </ThemeProvider>
         </body>
       </html>
