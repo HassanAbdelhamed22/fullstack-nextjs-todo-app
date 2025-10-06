@@ -12,6 +12,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.33.2",
     "@faker-js/faker": "^7.6.0",
     "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^6.16.2",
