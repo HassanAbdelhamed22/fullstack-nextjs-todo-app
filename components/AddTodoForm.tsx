@@ -31,7 +31,7 @@ import { useState } from "react";
 import Spinner from "./ui/Spinner";
 import { toast } from "sonner";
 
-const AddTodoForm = () => {
+const AddTodoForm = ({ userId }: { userId: string | null }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -48,6 +48,7 @@ const AddTodoForm = () => {
         title: data.title,
         body: data.body,
         completed: data.completed,
+        userId,
       });
 
       setOpen(false);

@@ -14,16 +14,19 @@ export const createTodoAction = async ({
   title,
   body,
   completed,
+  userId,
 }: {
   title: string;
   body?: string;
   completed: boolean;
+  userId: string | null;
 }) => {
   await prisma.todo.create({
     data: {
       title,
       body,
       completed,
+      user_id: userId as string,
     },
   });
 
