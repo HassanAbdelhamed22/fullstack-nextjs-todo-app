@@ -18,7 +18,7 @@ export function TodoTable({ todos }: { todos: ITodo[] }) {
       {/* Desktop Table */}
       <div className="hidden md:block">
         <Table>
-          <TableCaption>A list of your recent Todos.</TableCaption>
+          <TableCaption className="mb-1">A list of your recent Todos.</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>
